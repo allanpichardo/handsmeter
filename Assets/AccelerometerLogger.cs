@@ -15,6 +15,6 @@ public class AccelerometerLogger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        this.transform.position.x = Input.acceleration.x;
+        Debug.Log("Acceleration X: " + Input.acceleration.x);
     }
 }

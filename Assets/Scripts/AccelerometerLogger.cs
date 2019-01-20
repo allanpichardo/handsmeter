@@ -1,7 +1,6 @@
 ﻿
 using System.Collections;
 using System.Collections.Generic;
-using Filters;
 using UnityEngine;
 
 public class AccelerometerLogger : MonoBehaviour

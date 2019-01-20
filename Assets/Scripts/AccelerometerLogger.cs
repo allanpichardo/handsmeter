@@ -1,12 +1,27 @@
 ﻿
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class AccelerometerLogger : MonoBehaviour
 {
-    public float smoothing = 0.3f;
+    public enum AccelerationUnit
+    {
+        g, ms2
+    }
+
+    [Range(0.0f, 1.0f)]
+    public float sensitivity = 1.0f / 60.0f;
+    public AccelerationUnit unit = AccelerationUnit.ms2;
+    public bool reportChangeOnly = true;
+    public bool useRounding = true;
+    public int roundingDecimalPlaces = 2;
+    public System.MidpointRounding roundingBehavior = System.MidpointRounding.ToEven;
+
     private LowpassFilter lowpassFilter;
+    private const float ACCELERATION_EARTH = 9.8f;
+    private Vector3 lastValue = Vector3.zero;
 
     private void Start()
     {
@@ -15,9 +30,37 @@ public class AccelerometerLogger : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 filteredAcceleration = lowpassFilter.GetFilteredVector(Input.acceleration, smoothing);
+        Vector3 filteredAcceleration = lowpassFilter.GetFilteredVector(Input.acceleration, sensitivity);
 
-        Debug.Log(string.Format("Accel: X:{0} Y:{1} Z:{2}", filteredAcceleration.x, filteredAcceleration.y, filteredAcceleration.z));
+        if(unit == AccelerationUnit.ms2)
+        {
+            filteredAcceleration *= ACCELERATION_EARTH;
+        }
+        if(useRounding)
+        {
+            filteredAcceleration = new Vector3(
+                (float)Math.Round(filteredAcceleration.x, roundingDecimalPlaces, roundingBehavior),
+                (float)Math.Round(filteredAcceleration.y, roundingDecimalPlaces, roundingBehavior),
+                (float)Math.Round(filteredAcceleration.z, roundingDecimalPlaces, roundingBehavior)
+            );
+        }
+
+        if (reportChangeOnly)
+        {
+            printToLog(filteredAcceleration - lastValue);
+        }
+        else
+        {
+            printToLog(filteredAcceleration);
+        }
+
+        lastValue = filteredAcceleration;
+    }
+
+    private void printToLog(Vector3 vector)
+    {
+        Debug.Log(string.Format("Accel: X:{0} Y:{1} Z:{2}", vector.x, vector.y, vector.z));
+
     }
 
 }

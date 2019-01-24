@@ -8,19 +8,19 @@ public class AccelerometerLogger : MonoBehaviour
 {
     public enum AccelerationUnit
     {
-        g, ms2
+        G, Ms2
     }
 
     [Range(0.0f, 1.0f)]
     public float sensitivity = 1.0f / 60.0f;
-    public AccelerationUnit unit = AccelerationUnit.ms2;
+    public AccelerationUnit unit = AccelerationUnit.Ms2;
     public bool reportChangeOnly = true;
     public bool useRounding = true;
     public int roundingDecimalPlaces = 2;
     public System.MidpointRounding roundingBehavior = System.MidpointRounding.ToEven;
 
     private LowpassFilter lowpassFilter;
-    private const float ACCELERATION_EARTH = 9.8f;
+    private const float AccelerationEarth = 9.8f;
     private Vector3 lastValue = Vector3.zero;
 
     private void Start()
@@ -32,9 +32,9 @@ public class AccelerometerLogger : MonoBehaviour
     {
         Vector3 filteredAcceleration = lowpassFilter.GetFilteredVector(Input.acceleration, sensitivity);
 
-        if(unit == AccelerationUnit.ms2)
+        if(unit == AccelerationUnit.Ms2)
         {
-            filteredAcceleration *= ACCELERATION_EARTH;
+            filteredAcceleration *= AccelerationEarth;
         }
         if(useRounding)
         {

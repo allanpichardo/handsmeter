@@ -11,6 +11,7 @@ public class Chomper : MonoBehaviour
     private bool isMoving;
     private NavMeshAgent navMeshAgent;
     private float rewardTotal;
+    private float elapsedTime;
     
     public bool isDebug = true;
     public GameObject player;
@@ -29,6 +30,31 @@ public class Chomper : MonoBehaviour
         if (isDebug)
         {
             WatchActionKeys();
+        }
+        WatchRewardKeys();
+
+        TrackTime();
+        
+        UpdateRewardsText();
+    }
+
+    private void TrackTime()
+    {
+        elapsedTime += Time.deltaTime;
+    }
+
+    private void WatchRewardKeys()
+    {
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            //give reward
+            rewardTotal++;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            //give punishment
+            rewardTotal--;
         }
     }
 
@@ -149,24 +175,21 @@ public class Chomper : MonoBehaviour
     {
         if (player != null)
         {
-            if (Vector3.Distance(transform.position, target) > 5.0f)
-            {
-                isMoving = true;
-                transform.LookAt(target);
-                navMeshAgent.speed = speed;
-                navMeshAgent.SetDestination(target);
-                animator.SetFloat("speed", speed);
-                navMeshAgent.isStopped = false;
-            }
-            else
-            {
-                Stop();
-            }
+            isMoving = true;
+            transform.LookAt(target);
+            navMeshAgent.speed = speed;
+            navMeshAgent.SetDestination(target);
+            animator.SetFloat("speed", speed);
+            navMeshAgent.isStopped = false;
         }
     }
 
     private void RefreshAwayTarget()
     {
         awayTarget = new Vector3(Random.Range(-25, 25), Random.Range(-25,25), 0.0f);
+        if (awayTarget.Equals(player.transform.position))
+        {
+            RefreshAwayTarget();
+        }
     }
 }

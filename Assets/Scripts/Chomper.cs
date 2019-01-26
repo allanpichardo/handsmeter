@@ -75,6 +75,11 @@ public class Chomper : MonoBehaviour
         {
             DoFlip();
         }
+        //get hurt
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            GetHurt();
+        }
     }
 
     public void LookAtPlayer()
@@ -83,6 +88,11 @@ public class Chomper : MonoBehaviour
         {
             transform.LookAt(player.transform);
         }
+    }
+
+    public void GetHurt()
+    {
+        animator.SetTrigger("getHurt");
     }
 
     public void DoFlip()

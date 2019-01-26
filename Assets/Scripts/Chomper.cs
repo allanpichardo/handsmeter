@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Chomper : MonoBehaviour
 {
@@ -9,26 +10,37 @@ public class Chomper : MonoBehaviour
     private Vector3 awayTarget;
     private bool isMoving;
     private NavMeshAgent navMeshAgent;
+    private float rewardTotal;
     
     public bool isDebug = true;
     public GameObject player;
+    public Text rewardsText;
     
     void Start()
     {
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         RefreshAwayTarget();
+        UpdateRewardsText();
     }
 
     void Update()
     {
         if (isDebug)
         {
-            WatchKeys();
+            WatchActionKeys();
         }
     }
 
-    private void WatchKeys()
+    private void UpdateRewardsText()
+    {
+        if (rewardsText != null)
+        {
+            rewardsText.text = "Rewards: " + rewardTotal;
+        }
+    }
+
+    private void WatchActionKeys()
     {
         //run towards player
         if (Input.GetKeyDown(KeyCode.S))

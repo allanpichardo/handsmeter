@@ -22,11 +22,6 @@ public class Chomper : MonoBehaviour
 
     void Update()
     {
-        if (!isMoving)
-        {
-            LookAtPlayer();
-        }
-
         if (isDebug)
         {
             WatchKeys();
@@ -59,6 +54,27 @@ public class Chomper : MonoBehaviour
         {
             Stop();
         }
+        //get angry
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            SetAggressive(true);
+        } else if (Input.GetKeyUp(KeyCode.F))
+        {
+            SetAggressive(false);
+        }
+        //get happy
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            SetHappy(true);
+        } else if (Input.GetKeyUp(KeyCode.G))
+        {
+            SetHappy(false);
+        }
+        //do flip
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            DoFlip();
+        }
     }
 
     public void LookAtPlayer()
@@ -67,6 +83,11 @@ public class Chomper : MonoBehaviour
         {
             transform.LookAt(player.transform);
         }
+    }
+
+    public void DoFlip()
+    {
+        animator.SetTrigger("doFlip");
     }
 
     public void ApproachPlayer(float speed)
@@ -88,6 +109,18 @@ public class Chomper : MonoBehaviour
         animator.SetFloat("speed", 0.0f);
         navMeshAgent.isStopped = true;
         RefreshAwayTarget();
+    }
+
+    public void SetAggressive(bool isAggressive)
+    {
+        animator.SetBool("isHappy", false);
+        animator.SetBool("isAggressive", isAggressive);
+    }
+
+    public void SetHappy(bool isHappy)
+    {
+        animator.SetBool("isHappy", isHappy);
+        animator.SetBool("isAggressive", false);
     }
 
     private void MoveTowards(Vector3 target, float speed)

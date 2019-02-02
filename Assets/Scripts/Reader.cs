@@ -46,6 +46,16 @@ public class Reader : MonoBehaviour
 
             playbackIndex++;
         }
+
+        if (playbackIndex >= observations.Count)
+        {
+            playbackIndex = 0;
+        }
+    }
+
+    public int GetCurrentState()
+    {
+        return observations[playbackIndex].state;
     }
 
     string ReadFromFile(string path)

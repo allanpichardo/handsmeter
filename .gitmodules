@@ -1,0 +1,3 @@
+[submodule "Assets/ML-Agents/ml-agents"]
+	path = Assets/ML-Agents/ml-agents
+	url = https://github.com/Unity-Technologies/ml-agents.git

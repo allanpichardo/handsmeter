@@ -54,7 +54,7 @@ public class Recorder : MonoBehaviour
                 observation.rightHandRotationZ = localRotation.z;
             }
 
-            observation.state = 0;
+            observation.state = state;
         
             observations.Enqueue(observation);
         }

@@ -15,15 +15,21 @@ public class Reader : MonoBehaviour
     public Transform rightHand;
 
     private List<Observation> observations;
-
-    private void Start()
+    
+    public void InitializeWithFile(string filename)
     {
+        fileName = filename;
         observations = new List<Observation>();
         string data = ReadFromFile(BasePath + fileName);
         MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(data));  
         DataContractJsonSerializer ser = new DataContractJsonSerializer(observations.GetType());  
         observations = ser.ReadObject(ms) as List<Observation>;  
         ms.Close();  
+    }
+
+    private void Start()
+    {
+        InitializeWithFile(fileName);
     }
 
     private void FixedUpdate()

@@ -1,1 +1,4 @@
 Plugins/*
+Plugins/Computer/liblibtensorflow.so
+Plugins/Computer/libtensorflow.bundle
+Plugins/iOS/libtensorflow-core.a

@@ -16,6 +16,13 @@ public class EmpathyAgent : Agent
     {
         material = GetComponent<MeshRenderer>().material;
         material.SetColor("white", Color.white);
+        LoadRandomReplayFile();
+        playbackReader.playback = true;
+    }
+
+    private void LoadRandomReplayFile()
+    {
+        //todo: load a random file
     }
 
     public override void CollectObservations()
@@ -32,7 +39,7 @@ public class EmpathyAgent : Agent
     private float CalculateReward(float predicted, float actual)
     {
         float absDistance = Mathf.Abs(predicted - actual);
-        float sigmoid = (float) (1.0f / (Math.Exp(absDistance) + 1));
+        float sigmoid = (float) Math.Tanh(absDistance);
         return 1 - sigmoid;
     }
 
@@ -45,6 +52,10 @@ public class EmpathyAgent : Agent
         if (reward > 0)
         {
             material.color = new Color(0,reward,0);
+            if (reward > 0.98)
+            {
+                Done();
+            }
         }
         else if(reward < 0)
         {
@@ -59,5 +70,6 @@ public class EmpathyAgent : Agent
     public override void AgentReset()
     {
         material.color = Color.white;
+        LoadRandomReplayFile();
     }
 }

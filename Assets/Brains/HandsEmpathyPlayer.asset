@@ -13,15 +13,21 @@ MonoBehaviour:
   m_Name: HandsEmpathyPlayer
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 8
+    vectorObservationSize: 13
     numStackedVectorObservations: 10
-    vectorActionSize: 06000000
+    vectorActionSize: 01000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - 
-    vectorActionSpaceType: 0
-  keyContinuousPlayerActions: []
-  axisContinuousPlayerActions: []
+    - Sentiment
+    vectorActionSpaceType: 1
+  keyContinuousPlayerActions:
+  - key: 0
+    index: 0
+    value: 1
+  axisContinuousPlayerActions:
+  - axis: Mouse X
+    index: 0
+    scale: 1
   discretePlayerActions:
   - key: 113
     branchIndex: 0

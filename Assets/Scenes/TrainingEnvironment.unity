@@ -333,6 +333,7 @@ GameObject:
   - component: {fileID: 236756402}
   - component: {fileID: 236756401}
   - component: {fileID: 236756400}
+  - component: {fileID: 236756403}
   m_Layer: 0
   m_Name: Left Hand
   m_TagString: Untagged
@@ -412,6 +413,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 236756398}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &236756403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 236756398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19500a58afc4eaba7027d789acc782d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &610703938
 GameObject:
   m_ObjectHideFlags: 0
@@ -738,7 +751,7 @@ GameObject:
   - component: {fileID: 1608542062}
   - component: {fileID: 1608542061}
   m_Layer: 5
-  m_Name: Actual Text
+  m_Name: Guess Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -796,7 +809,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Predicted:'
+  m_Text: 'Guess:'
 --- !u!222 &1608542062
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -912,6 +925,7 @@ GameObject:
   - component: {fileID: 1938620274}
   - component: {fileID: 1938620273}
   - component: {fileID: 1938620272}
+  - component: {fileID: 1938620275}
   m_Layer: 0
   m_Name: Right Hand
   m_TagString: Untagged
@@ -991,6 +1005,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1938620270}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1938620275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1938620270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19500a58afc4eaba7027d789acc782d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2064625869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1131,7 +1157,10 @@ MonoBehaviour:
     maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 10
+    numberOfActionsBetweenDecisions: 60
   playbackReader: {fileID: 162369014}
+  player: {fileID: 1730661870}
   leftHand: {fileID: 236756398}
   rightHand: {fileID: 1938620270}
+  expectedText: {fileID: 1354745028}
+  guessText: {fileID: 1608542061}

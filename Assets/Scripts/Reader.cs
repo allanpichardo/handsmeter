@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Reader : MonoBehaviour
 {
-    private const string BasePath = "Assets/Recordings/";
+    public const string BasePath = "Assets/Recordings/";
     
     public string fileName = "observation.json";
     public bool playback = false;
@@ -20,7 +20,7 @@ public class Reader : MonoBehaviour
     {
         fileName = filename;
         observations = new List<Observation>();
-        string data = ReadFromFile(BasePath + fileName);
+        string data = ReadFromFile(fileName);
         MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(data));  
         DataContractJsonSerializer ser = new DataContractJsonSerializer(observations.GetType());  
         observations = ser.ReadObject(ms) as List<Observation>;  
@@ -29,7 +29,20 @@ public class Reader : MonoBehaviour
 
     private void Start()
     {
-        InitializeWithFile(fileName);
+        LoadRandomReplayFile();
+    }
+    
+    public void LoadRandomReplayFile()
+    {
+        playback = false;
+        playbackIndex = 0;
+        System.Random rand = new System.Random();
+        var files = Directory.GetFiles(BasePath,"*.json");
+        string randomFile = files[rand.Next(files.Length)];
+        InitializeWithFile(randomFile);
+        leftHand.GetComponent<TransformNormalizer>().ClearStats();
+        rightHand.GetComponent<TransformNormalizer>().ClearStats();
+        playback = true;
     }
 
     private void FixedUpdate()
@@ -55,11 +68,11 @@ public class Reader : MonoBehaviour
 
         if (playbackIndex >= observations.Count)
         {
-            playbackIndex = 0;
+            LoadRandomReplayFile();
         }
     }
 
-    public int GetCurrentState()
+    public float GetCurrentState()
     {
         return observations[playbackIndex].state;
     }

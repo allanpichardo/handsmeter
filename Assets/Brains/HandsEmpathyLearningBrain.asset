@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: HandsEmpathyLearningBrain
   m_EditorClassIdentifier: 
   brainParameters:
-    vectorObservationSize: 6
+    vectorObservationSize: 13
     numStackedVectorObservations: 10
     vectorActionSize: 01000000
     cameraResolutions: []
     vectorActionDescriptions:
-    - 
-    vectorActionSpaceType: 0
+    - Sentiment
+    vectorActionSpaceType: 1
   model: {fileID: 0}

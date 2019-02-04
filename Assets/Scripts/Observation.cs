@@ -5,7 +5,7 @@ using UnityEngine;
 [DataContract]  
 public class Observation
 {
-    [DataMember] public int state;
+    [DataMember] public float state;
     
     [DataMember] public float leftHandPositionX;
     [DataMember] public float leftHandPositionY;

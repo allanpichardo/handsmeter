@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using MLAgents;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Random = System.Random;
 
 public class EmpathyAgent : Agent
 {
@@ -32,11 +28,6 @@ public class EmpathyAgent : Agent
 
     public override void CollectObservations()
     {
-        material.color = Color.gray;
-        
-        Vector3 currentPosition = transform.position;
-        
-        AddVectorObs(Vector3.Distance(currentPosition, player.transform.position));
         AddVectorObs(transformNormalizerLeft.GetNormalizedPosition());
         AddVectorObs(transformNormalizerLeft.GetNormalizedRotation());
         AddVectorObs(transformNormalizerRight.GetNormalizedPosition());
@@ -45,21 +36,25 @@ public class EmpathyAgent : Agent
 
     private float CalculateReward(float predicted, float actual)
     {
-        //2 (1 - 2.16395 tanh(abs(x)))
         float absDistance = Mathf.Abs(predicted - actual);
         double sigmoid = 2 * (1 - (2.16395  * Math.Tanh(absDistance)));
-        //Debug.Log("Pred " + predicted+" Actual "+actual+" Rew "+sigmoid+" Dis "+absDistance);
         return (float) sigmoid;
     }
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        float reward = CalculateReward(vectorAction[0], playbackReader.GetCurrentState());
+        float action = Mathf.Clamp(vectorAction[0], -1.0f, 1.0f);
+        float reward = CalculateReward(action, playbackReader.GetCurrentState());
+        Debug.Log("Reward: "+reward);
         SetReward(reward);
         
         if (reward > 0)
         {
             material.color = new Color(0,reward,0);
+            if (reward > 0.98)
+            {
+                Done();
+            }
         }
         else if(reward < 0)
         {
@@ -71,7 +66,7 @@ public class EmpathyAgent : Agent
         }
 
         expectedText.text = "Expected: "+playbackReader.GetCurrentState();
-        guessText.text = "Guess: "+vectorAction[0];
+        guessText.text = "Guess: "+action;
     }
 
     public override void AgentReset()

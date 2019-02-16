@@ -8,8 +8,6 @@ using Random = UnityEngine.Random;
 
 public class Reader : MonoBehaviour
 {
-    public const string BasePath = "Assets/Recordings/";
-    
     public bool playback = false;
     public int playbackIndex = 0;
     public Transform leftHand;

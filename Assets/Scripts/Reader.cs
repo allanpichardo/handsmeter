@@ -30,6 +30,11 @@ public class Reader : MonoBehaviour
         LoadRandomReplayFile();
     }
     
+    void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape))
+            Application.Quit();
+    }
+    
     public void LoadRandomReplayFile()
     {
         playback = false;

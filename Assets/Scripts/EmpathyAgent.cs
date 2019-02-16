@@ -28,6 +28,10 @@ public class EmpathyAgent : Agent
 
     public override void CollectObservations()
     {
+        transformNormalizerLeft.UpdateValues(leftHand.transform);
+        transformNormalizerRight.UpdateValues(rightHand.transform);
+        
+        Vector3 check = transformNormalizerLeft.GetNormalizedPosition();
         AddVectorObs(transformNormalizerLeft.GetNormalizedPosition());
         AddVectorObs(transformNormalizerLeft.GetNormalizedRotation());
         AddVectorObs(transformNormalizerRight.GetNormalizedPosition());

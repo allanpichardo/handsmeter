@@ -11,10 +11,10 @@ public class TransformNormalizer : MonoBehaviour
         rotationStats = new VectorStatistics();
     }
 
-    private void FixedUpdate()
+    public void UpdateValues(Transform transform)
     {
-        positionStats.AddValue(transform.parent.localPosition);
-        rotationStats.AddValue(transform.parent.localEulerAngles);
+        positionStats.AddValue(transform.localPosition);
+        rotationStats.AddValue(transform.localEulerAngles);
     }
 
     public Vector3 GetNormalizedPosition()

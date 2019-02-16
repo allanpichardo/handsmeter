@@ -1,26 +1,26 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Reader : MonoBehaviour
 {
     public const string BasePath = "Assets/Recordings/";
     
-    public string fileName = "observation.json";
     public bool playback = false;
     public int playbackIndex = 0;
     public Transform leftHand;
     public Transform rightHand;
+    public int maxRecordingFile = 152;
 
     private List<Observation> observations;
     
-    public void InitializeWithFile(string filename)
+    public void InitializeWithRecording(string data)
     {
-        fileName = filename;
         observations = new List<Observation>();
-        string data = ReadFromFile(fileName);
         MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(data));  
         DataContractJsonSerializer ser = new DataContractJsonSerializer(observations.GetType());  
         observations = ser.ReadObject(ms) as List<Observation>;  
@@ -36,10 +36,9 @@ public class Reader : MonoBehaviour
     {
         playback = false;
         playbackIndex = 0;
-        System.Random rand = new System.Random();
-        var files = Directory.GetFiles(BasePath,"*.json");
-        string randomFile = files[rand.Next(files.Length)];
-        InitializeWithFile(randomFile);
+        int num = Random.Range(0, maxRecordingFile + 1);
+        TextAsset textAsset = Resources.Load<TextAsset>(num.ToString());
+        InitializeWithRecording(textAsset.text);
         leftHand.GetComponent<TransformNormalizer>().ClearStats();
         rightHand.GetComponent<TransformNormalizer>().ClearStats();
         playback = true;

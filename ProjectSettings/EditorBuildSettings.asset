@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Scenes/TrainingEnvironment.unity
+    guid: 2cb25b8db736a4063b1eddc323da43e9
   m_configObjects: {}

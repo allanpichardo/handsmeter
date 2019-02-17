@@ -28,14 +28,10 @@ public class EmpathyAgent : Agent
 
     public override void CollectObservations()
     {
-        transformNormalizerLeft.UpdateValues(leftHand.transform);
-        transformNormalizerRight.UpdateValues(rightHand.transform);
-        
-        Vector3 check = transformNormalizerLeft.GetNormalizedPosition();
-        AddVectorObs(transformNormalizerLeft.GetNormalizedPosition());
-        AddVectorObs(transformNormalizerLeft.GetNormalizedRotation());
-        AddVectorObs(transformNormalizerRight.GetNormalizedPosition());
-        AddVectorObs(transformNormalizerRight.GetNormalizedRotation());
+        AddVectorObs(transformNormalizerLeft.GetNormalizedPosition(leftHand.transform));
+        AddVectorObs(transformNormalizerLeft.GetNormalizedRotation(leftHand.transform));
+        AddVectorObs(transformNormalizerRight.GetNormalizedPosition(rightHand.transform));
+        AddVectorObs(transformNormalizerRight.GetNormalizedRotation(rightHand.transform));
     }
 
     private float CalculateReward(float predicted, float actual)

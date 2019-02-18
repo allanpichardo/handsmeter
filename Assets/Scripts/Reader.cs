@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using MLAgents;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,6 +14,7 @@ public class Reader : MonoBehaviour
     public Transform leftHand;
     public Transform rightHand;
     public int maxRecordingFile = 152;
+    public Agent agent;
 
     private List<Observation> observations;
     
@@ -44,6 +46,7 @@ public class Reader : MonoBehaviour
         InitializeWithRecording(textAsset.text);
         leftHand.GetComponent<TransformNormalizer>().ClearStats();
         rightHand.GetComponent<TransformNormalizer>().ClearStats();
+        playbackIndex = Random.Range(0, observations.Count);
         playback = true;
     }
 
@@ -70,8 +73,17 @@ public class Reader : MonoBehaviour
 
         if (playbackIndex >= observations.Count)
         {
+            if (agent != null)
+            {
+                agent.Done();
+            }
             LoadRandomReplayFile();
         }
+    }
+
+    public int GetScenarioLength()
+    {
+        return observations.Count;
     }
 
     public float GetCurrentState()

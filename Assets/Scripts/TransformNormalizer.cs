@@ -10,12 +10,50 @@ public class TransformNormalizer : MonoBehaviour
     private Vector3 minRotation;
     private Vector3 maxRotation;
 
+    private Vector3 minVelocity;
+    private Vector3 maxVelocity;
+
     private void Start()
     {
         minPosition = new Vector3();
         maxPosition = new Vector3();
         minRotation = new Vector3();
         maxRotation = new Vector3();
+        minVelocity = new Vector3();
+        maxVelocity = new Vector3();
+    }
+
+    public void UpdateValues(Vector3 velocity)
+    {
+        if (velocity.x < minVelocity.x)
+        {
+            minVelocity.x = velocity.x;
+        }
+
+        if (velocity.y < minVelocity.y)
+        {
+            minVelocity.y = velocity.y;
+        }
+
+        if (velocity.z < minVelocity.z)
+        {
+            minVelocity.z = velocity.z;
+        }
+
+        if (velocity.x > maxVelocity.x)
+        {
+            maxVelocity.x = velocity.x;
+        }
+
+        if (velocity.y > maxVelocity.y)
+        {
+            maxVelocity.y = velocity.y;
+        }
+
+        if (velocity.z > maxVelocity.z)
+        {
+            maxVelocity.z = velocity.z;
+        }
     }
 
     public void UpdateValues(Transform transform)
@@ -102,6 +140,19 @@ public class TransformNormalizer : MonoBehaviour
             NormValue(transform.localEulerAngles.x, minRotation.x, maxRotation.x),
             NormValue(transform.localEulerAngles.y, minRotation.y, maxRotation.y),
             NormValue(transform.localEulerAngles.z, minRotation.z, maxRotation.z)
+        );
+
+        return norm;
+    }
+
+    public Vector3 GetNormalizedVelocity(Vector3 rawVelocity)
+    {
+        UpdateValues(rawVelocity);
+        
+        Vector3 norm = new Vector3(
+            NormValue(rawVelocity.x, minVelocity.x, maxVelocity.x),
+            NormValue(rawVelocity.y, minVelocity.y, maxVelocity.y),
+            NormValue(rawVelocity.z, minVelocity.z, maxVelocity.z)
         );
 
         return norm;

@@ -24,12 +24,16 @@ public class EmpathyAgent : Agent
         
         material = GetComponent<MeshRenderer>().material;
         material.color = Color.white;
+
+        playbackReader.agent = this;
     }
 
     public override void CollectObservations()
     {
+        AddVectorObs(transformNormalizerLeft.GetNormalizedVelocity(leftHand.GetComponent<Rigidbody>().velocity));
         AddVectorObs(transformNormalizerLeft.GetNormalizedPosition(leftHand.transform));
         AddVectorObs(transformNormalizerLeft.GetNormalizedRotation(leftHand.transform));
+        AddVectorObs(transformNormalizerRight.GetNormalizedVelocity(rightHand.GetComponent<Rigidbody>().velocity));
         AddVectorObs(transformNormalizerRight.GetNormalizedPosition(rightHand.transform));
         AddVectorObs(transformNormalizerRight.GetNormalizedRotation(rightHand.transform));
     }
@@ -37,7 +41,7 @@ public class EmpathyAgent : Agent
     private float CalculateReward(float predicted, float actual)
     {
         float absDistance = Mathf.Abs(predicted - actual);
-        double sigmoid = 2 * (1 - (2.16395  * Math.Tanh(absDistance)));
+        double sigmoid = (1 - (2.16395  * Math.Tanh(absDistance)));
         return (float) sigmoid;
     }
 
@@ -51,7 +55,7 @@ public class EmpathyAgent : Agent
         if (reward > 0)
         {
             material.color = new Color(0,reward,0);
-            if (reward > 0.98)
+            if (reward > 0.99)
             {
                 Done();
             }
@@ -59,12 +63,16 @@ public class EmpathyAgent : Agent
         else if(reward < 0)
         {
             material.color = new Color(Mathf.Abs(reward), 0, 0);
+            if (reward < -0.99f)
+            {
+                Done();
+            }
         }
         else
         {
             material.color = Color.white;
         }
-
+        
         expectedText.text = "Expected: "+playbackReader.GetCurrentState();
         guessText.text = "Guess: "+action;
     }

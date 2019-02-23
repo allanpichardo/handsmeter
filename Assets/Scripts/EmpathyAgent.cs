@@ -30,10 +30,8 @@ public class EmpathyAgent : Agent
 
     public override void CollectObservations()
     {
-        AddVectorObs(transformNormalizerLeft.GetNormalizedVelocity(leftHand.GetComponent<Rigidbody>().velocity));
         AddVectorObs(transformNormalizerLeft.GetNormalizedPosition(leftHand.transform));
         AddVectorObs(transformNormalizerLeft.GetNormalizedRotation(leftHand.transform));
-        AddVectorObs(transformNormalizerRight.GetNormalizedVelocity(rightHand.GetComponent<Rigidbody>().velocity));
         AddVectorObs(transformNormalizerRight.GetNormalizedPosition(rightHand.transform));
         AddVectorObs(transformNormalizerRight.GetNormalizedRotation(rightHand.transform));
     }

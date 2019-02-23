@@ -46,7 +46,7 @@ public class Reader : MonoBehaviour
         InitializeWithRecording(textAsset.text);
         leftHand.GetComponent<TransformNormalizer>().ClearStats();
         rightHand.GetComponent<TransformNormalizer>().ClearStats();
-        playbackIndex = Random.Range(0, observations.Count);
+        playbackIndex = Random.Range(0, observations.Count / 2);
         playback = true;
     }
 

@@ -434,7 +434,7 @@ MonoBehaviour:
     maxStep: 0
     resetOnDone: 1
     onDemandDecision: 0
-    numberOfActionsBetweenDecisions: 1
+    numberOfActionsBetweenDecisions: 10
   leftHand: {fileID: 957602681}
   rightHand: {fileID: 1969184684}
   guessText: {fileID: 0}
@@ -609,6 +609,6 @@ PrefabInstance:
         type: 3}
       propertyPath: agent
       value: 
-      objectReference: {fileID: 1028769925}
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 467edab1381ba46b89fc37b390db0899, type: 3}

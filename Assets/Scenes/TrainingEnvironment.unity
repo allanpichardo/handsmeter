@@ -822,8 +822,7 @@ MonoBehaviour:
     broadcastingBrains:
     - {fileID: 11400000, guid: 658cc7572cd7f474da9831be211005d1, type: 2}
     - {fileID: 0}
-    _brainsToControl:
-    - {fileID: 11400000, guid: 658cc7572cd7f474da9831be211005d1, type: 2}
+    _brainsToControl: []
   maxSteps: 0
   trainingConfiguration:
     width: 80
@@ -1105,7 +1104,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2064625869}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39ac47ea856d440f6ac2a7944b3f3daf, type: 3}
+  m_Script: {fileID: 11500000, guid: 662f07cb7b96b48419e532bd11e95877, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   brain: {fileID: 11400000, guid: 658cc7572cd7f474da9831be211005d1, type: 2}
@@ -1115,6 +1114,7 @@ MonoBehaviour:
     resetOnDone: 1
     onDemandDecision: 0
     numberOfActionsBetweenDecisions: 50
+  maxTimePerEpisode: 10
   playbackReader: {fileID: 162369014}
   player: {fileID: 1730661870}
   leftHand: {fileID: 236756398}

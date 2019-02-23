@@ -4,24 +4,21 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class GeneralEmpathyAgent : Agent
+public class ChomperAgent : Agent
 {
-    public GameObject player;
     public GameObject leftHand;
     public GameObject rightHand;
     [FormerlySerializedAs("actualText")] public Text guessText;
 
     private TransformNormalizer transformNormalizerLeft;
     private TransformNormalizer transformNormalizerRight;
-    private Material material;
+    private Chomper chomper;
     
     public override void InitializeAgent()
     {
+        chomper = GetComponent<Chomper>();
         transformNormalizerLeft = leftHand.GetComponent<TransformNormalizer>();
         transformNormalizerRight = rightHand.GetComponent<TransformNormalizer>();
-        
-        material = GetComponent<MeshRenderer>().material;
-        material.color = Color.white;
     }
 
     public override void CollectObservations()
@@ -47,11 +44,12 @@ public class GeneralEmpathyAgent : Agent
         {
             guessText.text = "Guess: "+action;
         }
+        
+        chomper.TakeAction(action);
     }
 
     public override void AgentReset()
     {
-        material.color = Color.white;
         transformNormalizerLeft.ClearStats();
         transformNormalizerRight.ClearStats();
     }

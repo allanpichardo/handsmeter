@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using MLAgents;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -12,7 +13,7 @@ public class Chomper : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private float rewardTotal;
     private float elapsedTime;
-    
+
     public bool isDebug = true;
     public GameObject player;
     public Text rewardsText;
@@ -22,7 +23,6 @@ public class Chomper : MonoBehaviour
         animator = GetComponent<Animator>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         RefreshAwayTarget();
-        UpdateRewardsText();
     }
 
     void Update()
@@ -34,8 +34,6 @@ public class Chomper : MonoBehaviour
         WatchRewardKeys();
 
         TrackTime();
-        
-        UpdateRewardsText();
     }
 
     private void TrackTime()
@@ -55,14 +53,6 @@ public class Chomper : MonoBehaviour
         {
             //give punishment
             rewardTotal--;
-        }
-    }
-
-    private void UpdateRewardsText()
-    {
-        if (rewardsText != null)
-        {
-            rewardsText.text = "Rewards: " + rewardTotal;
         }
     }
 
@@ -190,6 +180,61 @@ public class Chomper : MonoBehaviour
         if (awayTarget.Equals(player.transform.position))
         {
             RefreshAwayTarget();
+        }
+    }
+
+    public void TakeAction(float action)
+    {
+        if (action >= 0)
+        {
+            if (action > 0.3 && action <= 0.5)
+            {
+                ApproachPlayer(1.0f);
+            }else if (action > 0.5 && action <= 0.7)
+            {
+                ApproachPlayer(2.0f);
+            }
+            else
+            {
+                Stop();
+            }
+
+            if (action > 0.5 && action < 0.8)
+            {
+                SetHappy(true);
+            }
+            else if(action < 0.5)
+            {
+                SetHappy(false);
+            }
+
+            if (action >= 0.8)
+            {
+                DoFlip();
+            }
+        }
+        else
+        {
+            if (action > -0.4)
+            {
+                RetreatFromPlayer(2.0f);
+                SetAggressive(false);
+            }
+            else
+            {
+                Stop();
+            }
+
+            if (action <= -0.4 && action > -0.6f)
+            {
+                SetAggressive(true);
+            }
+
+            if (action < -0.6f)
+            {
+                GetHurt();
+            }
+            
         }
     }
 }

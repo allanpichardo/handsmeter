@@ -4,17 +4,4 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
-  - enabled: 0
-    path: Assets/Scenes/TrainingEnvironment.unity
-    guid: 2cb25b8db736a4063b1eddc323da43e9
-  - enabled: 0
-    path: Assets/Scenes/TestingEnvironment.unity
-    guid: 72c60b7d48dce4cf5ae3be34b4e23b82
-  - enabled: 1
-    path: Assets/Scenes/Alien.unity
-    guid: eec83e9300e9648a4b4c980f238eefc1
-  m_configObjects: {}
+  m_Scenes: []

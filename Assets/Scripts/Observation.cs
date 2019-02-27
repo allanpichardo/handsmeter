@@ -6,6 +6,14 @@ using UnityEngine;
 public class Observation
 {
     [DataMember] public float state;
+    [DataMember] public float arousal;
+
+    [DataMember] public float headPositionX;
+    [DataMember] public float headPositionY;
+    [DataMember] public float headPositionZ;
+    [DataMember] public float headRotationX;
+    [DataMember] public float headRotationY;
+    [DataMember] public float headRotationZ;
     
     [DataMember] public float leftHandPositionX;
     [DataMember] public float leftHandPositionY;

@@ -136,13 +136,8 @@ public class TransformNormalizer : MonoBehaviour
     {
         UpdateValues(transform);
         
-        Vector3 norm = new Vector3(
-            NormValue(transform.localEulerAngles.x, minRotation.x, maxRotation.x),
-            NormValue(transform.localEulerAngles.y, minRotation.y, maxRotation.y),
-            NormValue(transform.localEulerAngles.z, minRotation.z, maxRotation.z)
-        );
-
-        return norm;
+        return transform.localEulerAngles / 360.0f;
+        
     }
 
     public Vector3 GetNormalizedVelocity(Vector3 rawVelocity)

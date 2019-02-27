@@ -11,10 +11,12 @@ public class Reader : MonoBehaviour
 {
     public bool playback = false;
     public int playbackIndex = 0;
+    public Transform head;
     public Transform leftHand;
     public Transform rightHand;
     public int maxRecordingFile = 152;
     public Agent agent;
+    private int fileNum = 0;
 
     private List<Observation> observations;
     
@@ -41,12 +43,13 @@ public class Reader : MonoBehaviour
     {
         playback = false;
         playbackIndex = 0;
-        int num = Random.Range(0, maxRecordingFile + 1);
-        TextAsset textAsset = Resources.Load<TextAsset>(num.ToString());
+        //fileNum = Random.Range(0, maxRecordingFile + 1);
+        fileNum = (fileNum+1) % maxRecordingFile;
+        TextAsset textAsset = Resources.Load<TextAsset>(fileNum.ToString());
         InitializeWithRecording(textAsset.text);
         leftHand.GetComponent<TransformNormalizer>().ClearStats();
         rightHand.GetComponent<TransformNormalizer>().ClearStats();
-        playbackIndex = Random.Range(0, observations.Count / 2);
+        //playbackIndex = Random.Range(0, observations.Count / 2);
         playback = true;
     }
 
@@ -66,6 +69,12 @@ public class Reader : MonoBehaviour
             {
                 rightHand.localPosition = new Vector3(observation.rightHandPositionX, observation.rightHandPositionY, observation.rightHandPositionZ);
                 rightHand.localEulerAngles = new Vector3(observation.rightHandRotationX, observation.rightHandRotationY, observation.rightHandRotationZ);
+            }
+
+            if (head != null)
+            {
+                head.localPosition = new Vector3(observation.headPositionX, observation.headPositionY, observation.headPositionZ);
+                head.localEulerAngles = new Vector3(observation.headRotationX, observation.headRotationY, observation.headRotationZ);
             }
 
             playbackIndex++;
@@ -89,6 +98,11 @@ public class Reader : MonoBehaviour
     public float GetCurrentState()
     {
         return observations[playbackIndex].state;
+    }
+
+    public float GetCurrentArousal()
+    {
+        return observations[playbackIndex].arousal;
     }
 
     string ReadFromFile(string path)

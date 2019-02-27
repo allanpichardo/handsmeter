@@ -1,39 +1,41 @@
 ﻿using System;
 using MLAgents;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class EmpathyAgent : Agent
 {
-    public Reader playbackReader;
-    public GameObject player;
+    public TrainingPlayer trainingPlayer;
+    public GameObject head;
     public GameObject leftHand;
     public GameObject rightHand;
-    public Text expectedText;
-    [FormerlySerializedAs("actualText")] public Text guessText;
 
-    private TransformNormalizer transformNormalizerLeft;
-    private TransformNormalizer transformNormalizerRight;
     private Material material;
+    private float lastDistance;
     
     public override void InitializeAgent()
     {
-        transformNormalizerLeft = leftHand.GetComponent<TransformNormalizer>();
-        transformNormalizerRight = rightHand.GetComponent<TransformNormalizer>();
-        
         material = GetComponent<MeshRenderer>().material;
         material.color = Color.white;
-
-        playbackReader.agent = this;
+        trainingPlayer.LoadRandomTrial();
     }
 
     public override void CollectObservations()
     {
-        AddVectorObs(transformNormalizerLeft.GetNormalizedPosition(leftHand.transform));
-        AddVectorObs(transformNormalizerLeft.GetNormalizedRotation(leftHand.transform));
-        AddVectorObs(transformNormalizerRight.GetNormalizedPosition(rightHand.transform));
-        AddVectorObs(transformNormalizerRight.GetNormalizedRotation(rightHand.transform));
+        Vector3 leftPosition = leftHand.transform.position.normalized;
+        Quaternion leftRotation = leftHand.transform.rotation.normalized;
+
+        Vector3 rightPosition = rightHand.transform.position.normalized;
+        Quaternion rightRotation = rightHand.transform.rotation.normalized;
+        
+        Vector3 headPosition = head.transform.position.normalized;
+        Quaternion headRotation = head.transform.rotation.normalized;
+        
+        AddVectorObs(leftPosition);
+        AddVectorObs(leftRotation);
+        AddVectorObs(rightPosition);
+        AddVectorObs(rightRotation);
+        AddVectorObs(headPosition);
+        AddVectorObs(headRotation);
     }
 
     private float CalculateReward(float predicted, float actual)
@@ -45,41 +47,52 @@ public class EmpathyAgent : Agent
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        float action = Mathf.Clamp(vectorAction[0], -1.0f, 1.0f);
-        float reward = CalculateReward(action, playbackReader.GetCurrentState());
-        Debug.Log("Reward: "+reward);
-        SetReward(reward);
+        float valence = Mathf.Clamp(vectorAction[0], -1.0f, 1.0f);
+        float arousal = Mathf.Clamp(vectorAction[1], -1.0f, 1.0f);
+
+        Trial trial = trainingPlayer.GetCurrentTrial();
+        float valenceReward = CalculateReward(valence, trial.valence);
+        float arousalReward = CalculateReward(arousal, trial.energy);
+        float reward = (0.5f * valenceReward + 0.5f * arousalReward);
         
+        Vector2 actual = new Vector2(trial.valence, trial.energy);
+        Vector2 guess = new Vector2(valence, arousal);
+        float distance = Vector2.Distance(actual, guess);
+        
+        Monitor.Log("Step Reward", reward);
+        Monitor.Log("Valence", new []{trial.valence, valence});
+        Monitor.Log("Arousal", new []{trial.energy, arousal});
+
+        //Debug.Log(distance);
+        
+        SetReward(reward);
+
+
         if (reward > 0)
         {
             material.color = new Color(0,reward,0);
-            if (reward > 0.99)
+            if (reward > 0.90)
             {
+                SetReward(1.0f);
                 Done();
             }
         }
         else if(reward < 0)
         {
             material.color = new Color(Mathf.Abs(reward), 0, 0);
-            if (reward < -0.99f)
-            {
-                Done();
-            }
         }
         else
         {
             material.color = Color.white;
         }
-        
-        expectedText.text = "Expected: "+playbackReader.GetCurrentState();
-        guessText.text = "Guess: "+action;
+
+        lastDistance = distance;
+
     }
 
     public override void AgentReset()
     {
         material.color = Color.white;
-        transformNormalizerLeft.ClearStats();
-        transformNormalizerRight.ClearStats();
-        playbackReader.LoadRandomReplayFile();
+        trainingPlayer.LoadRandomTrial();
     }
 }

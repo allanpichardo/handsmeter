@@ -1052,7 +1052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 473581352, guid: b383be936776746b7b45e5e375d03208, type: 3}
       propertyPath: agentParameters.numberOfActionsBetweenDecisions
-      value: 60
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b383be936776746b7b45e5e375d03208, type: 3}

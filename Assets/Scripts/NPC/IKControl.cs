@@ -28,11 +28,8 @@ public class IKControl : MonoBehaviour {
             if(player != null)
             {
 
-                if (Vector3.Distance(player.position, transform.position) < attentionDistance)
-                {
-                    animator.SetLookAtWeight(1);
-                    animator.SetLookAtPosition(player.position);
-                }
+                animator.SetLookAtWeight(0.75f);
+                animator.SetLookAtPosition(player.position);
 
                 int animationState = animator.GetCurrentAnimatorStateInfo(animator.GetLayerIndex("Base Layer"))
                     .shortNameHash;

@@ -29,6 +29,10 @@ public class EmpathyAgent : Agent
         
         Vector3 headPosition = head.transform.position.normalized;
         Quaternion headRotation = head.transform.rotation.normalized;
+
+        Vector3 leftUp = leftHand.transform.TransformDirection(Vector3.up);
+        Vector3 rightUp = rightHand.transform.TransformDirection(Vector3.up);
+        Vector3 headUp = head.transform.TransformDirection(Vector3.up);
         
         AddVectorObs(leftPosition);
         AddVectorObs(leftRotation);
@@ -36,6 +40,9 @@ public class EmpathyAgent : Agent
         AddVectorObs(rightRotation);
         AddVectorObs(headPosition);
         AddVectorObs(headRotation);
+        AddVectorObs(leftUp);
+        AddVectorObs(rightUp);
+        AddVectorObs(headUp);
     }
 
     private float CalculateReward(float predicted, float actual)
@@ -58,6 +65,7 @@ public class EmpathyAgent : Agent
         Vector2 actual = new Vector2(trial.valence, trial.energy);
         Vector2 guess = new Vector2(valence, arousal);
         float distance = Vector2.Distance(actual, guess);
+        distance = Mathf.Clamp(distance, 0.0f, 1.0f);
         
         Monitor.Log("Step Reward", reward);
         Monitor.Log("Valence", new []{trial.valence, valence});
@@ -65,17 +73,23 @@ public class EmpathyAgent : Agent
 
         //Debug.Log(distance);
         
+//        SetReward(1 - distance);
         SetReward(reward);
 
+        if (reward > 0.95)
+        {
+            SetReward(1.0f);
+            Done();
+        }
 
         if (reward > 0)
         {
             material.color = new Color(0,reward,0);
-            if (reward > 0.90)
-            {
-                SetReward(1.0f);
-                Done();
-            }
+//            if (reward > 0.90)
+//            {
+//                SetReward(1.0f);
+//                Done();
+//            }
         }
         else if(reward < 0)
         {

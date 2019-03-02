@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Alien.unity
     guid: eec83e9300e9648a4b4c980f238eefc1
+  - enabled: 0
+    path: Assets/Scenes/Brain VR Demo.unity
+    guid: 917fbbb8896d34eca8b92dfad1035799
   m_configObjects: {}
